@@ -1,0 +1,53 @@
+- hosts: test
+  become: true
+  remote_user: tungdt
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+      ignore_errors: true
+
+    - name: Add GPG key docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg 
+        state: present
+
+    - name: Add repository docker
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: install docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+      ignore_errors: true
+
+    - name: Install Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-linux-x86_64"
+        dest: /bin/docker-compose
+        mode: "0755"
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: copy docker-compose file
+      copy:
+        src: ~/docker-compose.yml
+        dest: /home/tungdt
+        owner: tungdt
+        group: tungdt
+        mode: 1077
+      ignore_errors: true
+
+    - name: start docker-compose
+      shell:
+        cmd: "docker-compose up -d"
