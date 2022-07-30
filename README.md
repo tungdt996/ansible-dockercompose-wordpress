@@ -1,2 +1,2 @@
 # ansible-dockercompose-wordpress
-command: ansible-playbook -i inventories/hosts site.yml -u tungdt -k -K
+command: ansible-playbook -i inventories/hosts site.yml -u remote_user -k -K
