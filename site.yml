@@ -2,9 +2,8 @@
   become: true
   remote_user: tungdt
   tasks:
-    - name: Update and upgrade apt packages
+    - name: Update apt packages
       apt:
-        upgrade: yes
         update_cache: yes
       ignore_errors: true
 
