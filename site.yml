@@ -40,7 +40,7 @@
 
     - name: copy docker-compose file
       copy:
-        src: ~/docker-compose.yml
+        src: templates/docker-compose.yml
         dest: /home/tungdt
         owner: tungdt
         group: tungdt
